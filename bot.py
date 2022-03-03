@@ -1,8 +1,8 @@
 from dotenv import load_dotenv
 import os
-import json
-import telegram
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from API_commands import *
+
 
 load_dotenv('.env')
 TOKEN = os.environ['TOKEN']
@@ -41,17 +41,21 @@ def start(update, context):
     update.message.reply_text(text)
 
 
-def test(update, context):
-    update.message.reply_text(
-        text=" # Hey there {first_name} How are you ?", parse_mode=telegram.ParseMode.MARKDOWN_V2)
-
-
 def main():
     updater = Updater(TOKEN, use_context=True)
 
     dp = updater.dispatcher
     dp.add_handler(CommandHandler('start', start))
-    dp.add_handler(CommandHandler('test', test))
+    dp.add_handler(CommandHandler('soon', soon))
+    dp.add_handler(CommandHandler('CodeForces', CodeForces))
+    dp.add_handler(CommandHandler('TopCoder', TopCoder))
+    dp.add_handler(CommandHandler('AtCoder', AtCoder))
+    dp.add_handler(CommandHandler('CodeChef', CodeChef))
+    dp.add_handler(CommandHandler('CSAcademy', CSAcademy))
+    dp.add_handler(CommandHandler('HackerRank', HackerRank))
+    dp.add_handler(CommandHandler('HackerEarth', HackerEarth))
+    dp.add_handler(CommandHandler('KickStart', KickStart))
+    dp.add_handler(CommandHandler('LeetCode', LeetCode))
 
     updater.start_polling()
 
