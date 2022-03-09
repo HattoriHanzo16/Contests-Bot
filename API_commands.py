@@ -33,7 +33,7 @@ def CodeForces(update, context):
     data = fetch('codeforces')
     text = []
     for contest in data[:3]:
-
+        # comment
         curr = f"{red_circle_emoji} {contest['name']} \n" \
                f"duration: {secondstohours(contest['duration'])} hours \n"\
                f"CHECK IT OUT ON {contest['url']}"
