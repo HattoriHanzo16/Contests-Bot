@@ -1,18 +1,23 @@
 from telegram.ext import Updater, CommandHandler
 from API_service import fetch
-from datetime import datetime
+import datetime
 
 
 '''
 TODO: 1.Get the dates formating correctly
-      2.Get the duration calculation
+      2.Get the duration calculation [X]
       3.Figure out how many to render at one call
       4.Sort the Fetched list according to starting dates close to current date 
 '''
 
 
+
+from bot import CUSTOM_KEYBOARD
+
+
+ #Util Function
 def secondstohours(seconds):
-    return 123
+    return str(datetime.timedelta(seconds=int(seconds.split('.')[0])))
 
 
 def soon(update, context):
@@ -25,7 +30,7 @@ def soon(update, context):
                f"duration: {secondstohours(contest['duration'])} hours \n"\
                f"CHECK IT OUT ON {contest['url']}"
 
-        update.message.reply_text(curr)
+        update.message.reply_text(curr,reply_markup=CUSTOM_KEYBOARD)
 
 
 def CodeForces(update, context):
@@ -33,12 +38,11 @@ def CodeForces(update, context):
     data = fetch('codeforces')
     text = []
     for contest in data[:3]:
-        # comment
         curr = f"{red_circle_emoji} {contest['name']} \n" \
                f"duration: {secondstohours(contest['duration'])} hours \n"\
                f"CHECK IT OUT ON {contest['url']}"
 
-        update.message.reply_text(curr)
+        update.message.reply_text(curr,reply_markup=CUSTOM_KEYBOARD)
 
 
 def TopCoder(update, context):
@@ -51,7 +55,7 @@ def TopCoder(update, context):
                f"duration: {secondstohours(contest['duration'])} hours \n"\
                f"CHECK IT OUT ON {contest['url']}"
 
-        update.message.reply_text(curr)
+        update.message.reply_text(curr,reply_markup=CUSTOM_KEYBOARD)
 
 
 def AtCoder(update, context):
@@ -64,7 +68,7 @@ def AtCoder(update, context):
                f"duration: {secondstohours(contest['duration'])} hours \n"\
                f"CHECK IT OUT ON {contest['url']}"
 
-        update.message.reply_text(curr)
+        update.message.reply_text(curr,reply_markup=CUSTOM_KEYBOARD)
 
 
 def CodeChef(update, context):
@@ -77,20 +81,24 @@ def CodeChef(update, context):
                f"duration: {secondstohours(contest['duration'])} hours \n"\
                f"CHECK IT OUT ON {contest['url']}"
 
-        update.message.reply_text(curr)
+        update.message.reply_text(curr,reply_markup=CUSTOM_KEYBOARD)
 
 
 def CSAcademy(update, context):
     red_circle_emoji = '\U0001f534'
     data = fetch('cs_academy')
-    text = []
+    if len(data) == 0:
+        curr = f"{red_circle_emoji} No upcoming contests are avaliable {red_circle_emoji}"
+        update.message.reply_text(curr,reply_markup=CUSTOM_KEYBOARD)
+        return
+
     for contest in data[:3]:
 
         curr = f"{red_circle_emoji} {contest['name']} \n" \
                f"duration: {secondstohours(contest['duration'])} hours \n"\
                f"CHECK IT OUT ON {contest['url']}"
 
-        update.message.reply_text(curr)
+        update.message.reply_text(curr,reply_markup=CUSTOM_KEYBOARD)
 
 
 def HackerRank(update, context):
@@ -103,7 +111,7 @@ def HackerRank(update, context):
                f"duration: {secondstohours(contest['duration'])} hours \n"\
                f"CHECK IT OUT ON {contest['url']}"
 
-        update.message.reply_text(curr)
+        update.message.reply_text(curr,reply_markup=CUSTOM_KEYBOARD)
 
 
 def HackerEarth(update, context):
@@ -116,7 +124,7 @@ def HackerEarth(update, context):
                f"duration: {secondstohours(contest['duration'])} hours \n"\
                f"CHECK IT OUT ON {contest['url']}"
 
-        update.message.reply_text(curr)
+        update.message.reply_text(curr,reply_markup=CUSTOM_KEYBOARD)
 
 
 def KickStart(update, context):
@@ -129,7 +137,7 @@ def KickStart(update, context):
                f"duration: {secondstohours(contest['duration'])} hours \n"\
                f"CHECK IT OUT ON {contest['url']}"
 
-        update.message.reply_text(curr)
+        update.message.reply_text(curr,reply_markup=CUSTOM_KEYBOARD)
 
 
 def LeetCode(update, context):
@@ -142,4 +150,4 @@ def LeetCode(update, context):
                f"duration: {secondstohours(contest['duration'])} hours \n"\
                f"CHECK IT OUT ON {contest['url']}"
 
-        update.message.reply_text(curr)
+        update.message.reply_text(curr,reply_markup=CUSTOM_KEYBOARD)
