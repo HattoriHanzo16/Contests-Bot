@@ -45,11 +45,10 @@ def main():
     dp.add_handler(CommandHandler('KickStart', KickStart))
     dp.add_handler(CommandHandler('LeetCode', LeetCode))
 
-    updater.start_webhook(listen="0.0.0.0",
-                          port=PORT,
-                          url_path=TOKEN)
-    # updater.bot.set_webhook(url=settings.WEBHOOK_URL)
-    updater.bot.set_webhook("ContestsBot" + TOKEN)
+  updater.start_webhook(listen="0.0.0.0",
+                      port=int(PORT),
+                      url_path=TOKEN,
+                      webhook_url = 'https://contestsbot.herokuapp.com/' + TOKEN)
 
     updater.idle()
 
