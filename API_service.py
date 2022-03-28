@@ -7,3 +7,5 @@ def fetch(suffix):
     res = requests.get(BASE_URL+suffix)
     data = res.json()
     return data
+
+

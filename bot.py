@@ -4,12 +4,16 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from telegram import ReplyKeyboardMarkup,KeyboardButton
 from API_commands import *
 
+
+
+#Bot Token from Telegram's BotFather
 load_dotenv('.env')
 TOKEN = os.environ['TOKEN']
 
+
+
 #Emojis
-stopwatch_emoji = '\U0001f55b'
-pushpin_emoji = '\U0001F4CD'
+from UTIL import *
 
 
 CUSTOM_KEYBOARD = ReplyKeyboardMarkup(keyboard=[['/soon'+stopwatch_emoji],[ '/CodeForces'+pushpin_emoji,'/TopCoder'+pushpin_emoji,'/AtCoder'+pushpin_emoji],['/CodeChef'+pushpin_emoji,'/CSAcademy'+pushpin_emoji,'/HackerRank'+pushpin_emoji],['/HackerEarth'+pushpin_emoji,'/KickStart'+pushpin_emoji,'/LeetCode'+pushpin_emoji]])
@@ -17,12 +21,12 @@ CUSTOM_KEYBOARD = ReplyKeyboardMarkup(keyboard=[['/soon'+stopwatch_emoji],[ '/Co
 
 def start(update, context):
     first_name = update.message.chat.first_name
-    hey_emoji = '\U0001f44b'
-    wink_emoji = '\U0001f609'
+
     text = f'Hey there {first_name} {hey_emoji}, \n' \
         f'You can select your favorite website from the given keyboard and find about any upcoming contests from me {wink_emoji} '
 
     update.message.reply_text(text,reply_markup=CUSTOM_KEYBOARD)
+
 
 
 def main():

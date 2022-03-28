@@ -1,153 +1,63 @@
 from telegram.ext import Updater, CommandHandler
 from API_service import fetch
-import datetime
-
-
-'''
-TODO: 1.Get the dates formating correctly
-      2.Get the duration calculation [X]
-      3.Figure out how many to render at one call
-      4.Sort the Fetched list according to starting dates close to current date 
-'''
 
 
 
+
+
+from UTIL import *
 from bot import CUSTOM_KEYBOARD
 
 
- #Util Function
-def secondstohours(seconds):
-    return str(datetime.timedelta(seconds=int(seconds.split('.')[0])))
+
+
+
+def reply(update,context,prefix):
+    data = fetch(prefix)
+    if len(data) == 0:
+           curr = f"{prohibited_emoji} No upcoming contests are avaliable {prohibited_emoji}"
+           update.message.reply_text(curr,reply_markup=CUSTOM_KEYBOARD)
+           return
+
+    for contest in data[:4]:
+
+        curr = f"{red_circle_emoji} {contest['name']}  {red_circle_emoji} \n \n" \
+               f"{clock_emoji} Duration: {secondstohours(contest['duration'])} hours \n"\
+               f"{bellhop_emoji} Starting on: {startdate(contest['start_time']) }  \n \n"\
+               f"CHECK IT OUT   {rocket_emoji} \n \n"\
+               f"{contest['url']}" \
+
+
+        update.message.reply_text(curr,reply_markup=CUSTOM_KEYBOARD)
 
 
 def soon(update, context):
-    red_circle_emoji = '\U0001f534'
     data = [i for i in fetch('all') if i['in_24_hours']]
-    text = []
-    for contest in data[:3]:
-
-        curr = f"{red_circle_emoji} {contest['name']} By {contest['site']} \n" \
-               f"duration: {secondstohours(contest['duration'])} hours \n"\
-               f"CHECK IT OUT ON {contest['url']}"
-
-        update.message.reply_text(curr,reply_markup=CUSTOM_KEYBOARD)
-
-
-def CodeForces(update, context):
-    red_circle_emoji = '\U0001f534'
-    data = fetch('codeforces')
-    text = []
-    for contest in data[:3]:
-        curr = f"{red_circle_emoji} {contest['name']} \n" \
-               f"duration: {secondstohours(contest['duration'])} hours \n"\
-               f"CHECK IT OUT ON {contest['url']}"
-
-        update.message.reply_text(curr,reply_markup=CUSTOM_KEYBOARD)
-
-
-def TopCoder(update, context):
-    red_circle_emoji = '\U0001f534'
-    data = fetch('top_coder')
-    text = []
-    for contest in data[:3]:
-
-        curr = f"{red_circle_emoji} {contest['name']} \n" \
-               f"duration: {secondstohours(contest['duration'])} hours \n"\
-               f"CHECK IT OUT ON {contest['url']}"
-
-        update.message.reply_text(curr,reply_markup=CUSTOM_KEYBOARD)
-
-
-def AtCoder(update, context):
-    red_circle_emoji = '\U0001f534'
-    data = fetch('at_coder')
-    text = []
-    for contest in data[:3]:
-
-        curr = f"{red_circle_emoji} {contest['name']}  \n" \
-               f"duration: {secondstohours(contest['duration'])} hours \n"\
-               f"CHECK IT OUT ON {contest['url']}"
-
-        update.message.reply_text(curr,reply_markup=CUSTOM_KEYBOARD)
-
-
-def CodeChef(update, context):
-    red_circle_emoji = '\U0001f534'
-    data = fetch('code_chef')
-    text = []
-    for contest in data[:3]:
-
-        curr = f"{red_circle_emoji} {contest['name']}  \n" \
-               f"duration: {secondstohours(contest['duration'])} hours \n"\
-               f"CHECK IT OUT ON {contest['url']}"
-
-        update.message.reply_text(curr,reply_markup=CUSTOM_KEYBOARD)
-
-
-def CSAcademy(update, context):
-    red_circle_emoji = '\U0001f534'
-    data = fetch('cs_academy')
     if len(data) == 0:
-        curr = f"{red_circle_emoji} No upcoming contests are avaliable {red_circle_emoji}"
+        curr = f"{prohibited_emoji} No upcoming contests are avaliable {prohibited_emoji}"
         update.message.reply_text(curr,reply_markup=CUSTOM_KEYBOARD)
         return
 
-    for contest in data[:3]:
+    for contest in data[:4]:
 
-        curr = f"{red_circle_emoji} {contest['name']} \n" \
-               f"duration: {secondstohours(contest['duration'])} hours \n"\
-               f"CHECK IT OUT ON {contest['url']}"
-
-        update.message.reply_text(curr,reply_markup=CUSTOM_KEYBOARD)
-
-
-def HackerRank(update, context):
-    red_circle_emoji = '\U0001f534'
-    data = fetch('hacker_rank')
-    text = []
-    for contest in data[:3]:
-
-        curr = f"{red_circle_emoji} {contest['name']}  \n" \
-               f"duration: {secondstohours(contest['duration'])} hours \n"\
-               f"CHECK IT OUT ON {contest['url']}"
+        curr = f"{red_circle_emoji} {contest['name']} {red_circle_emoji} \n \n" \
+               f"{clock_emoji} Duration: {secondstohours(contest['duration'])} hours \n"\
+               f"{bellhop_emoji} Starting on: {startdate(contest['start_time'])}  \n \n"\
+               f"CHECK IT OUT   {rocket_emoji} \n \n"\
+               f"{contest['url']}" \
 
         update.message.reply_text(curr,reply_markup=CUSTOM_KEYBOARD)
 
 
-def HackerEarth(update, context):
-    red_circle_emoji = '\U0001f534'
-    data = fetch('hacker_earth')
-    text = []
-    for contest in data[:3]:
-
-        curr = f"{red_circle_emoji} {contest['name']} By  \n" \
-               f"duration: {secondstohours(contest['duration'])} hours \n"\
-               f"CHECK IT OUT ON {contest['url']}"
-
-        update.message.reply_text(curr,reply_markup=CUSTOM_KEYBOARD)
 
 
-def KickStart(update, context):
-    red_circle_emoji = '\U0001f534'
-    data = fetch('kick_start')
-    text = []
-    for contest in data[:3]:
+CodeForces = lambda update,context,*_:reply(update,context,'codeforces')
+TopCoder = lambda update,context,*_:reply(update,context,'top_coder')
+AtCoder = lambda update,context,*_:reply(update,context,'at_coder')
+CodeChef = lambda update,context,*_:reply(update,context,'code_chef')
+CSAcademy = lambda update,context,*_:reply(update,context,'cs_academy')
+HackerRank = lambda update,context,*_:reply(update,context,'hacker_rank')
+HackerEarth = lambda update,context,*_:reply(update,context,'hacker_earth')
+KickStart = lambda update,context,*_:reply(update,context,'kick_start')
+LeetCode = lambda update,context,*_:reply(update,context,'leet_code')
 
-        curr = f"{red_circle_emoji} {contest['name']}  \n" \
-               f"duration: {secondstohours(contest['duration'])} hours \n"\
-               f"CHECK IT OUT ON {contest['url']}"
-
-        update.message.reply_text(curr,reply_markup=CUSTOM_KEYBOARD)
-
-
-def LeetCode(update, context):
-    red_circle_emoji = '\U0001f534'
-    data = fetch('leet_code')
-    text = []
-    for contest in data[:3]:
-
-        curr = f"{red_circle_emoji} {contest['name']}  \n" \
-               f"duration: {secondstohours(contest['duration'])} hours \n"\
-               f"CHECK IT OUT ON {contest['url']}"
-
-        update.message.reply_text(curr,reply_markup=CUSTOM_KEYBOARD)
